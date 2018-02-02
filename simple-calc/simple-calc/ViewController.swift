@@ -107,7 +107,6 @@ class ViewController: UIViewController {
                 if n != "avg" {
                     avg += Double(n)!
                     count += 1
-                    print("avg : \(avg) count: \(count))")
                 }
             }
             return avg / count
