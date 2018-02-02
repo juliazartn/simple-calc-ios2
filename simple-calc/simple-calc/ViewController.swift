@@ -12,6 +12,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var calculateLabel: UILabel!
     
+    var calculationsBank : [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.calculateLabel.text = ""
@@ -36,11 +38,14 @@ class ViewController: UIViewController {
         
         switch sender.tag {
         case 10 : //equals
+            var newCalculation = self.calculateLabel.text! + " = "
             let result = equals(self.calculateLabel.text!)
             var newLabel : String = String(result)
             if !isDecimal(result) { //if result is a int
                 newLabel = String(Int(result))
             }
+            newCalculation += newLabel
+            calculationsBank.append(newCalculation)
             self.calculateLabel.text = newLabel
         case 11: //plus
             opString = " + "
@@ -57,6 +62,7 @@ class ViewController: UIViewController {
         case 17: //count
             opString = " count "
         case 18: //fact
+            var newCalculation = self.calculateLabel.text! + " fact "
             var arr : [String] = self.calculateLabel.text!.split(separator: " ").map({ substr in String(substr) })
             var num = Double(arr[0])! - 1
             var ans = Double(arr[0])!
@@ -71,6 +77,8 @@ class ViewController: UIViewController {
                 num = num - 1
             }
             self.calculateLabel.text = String(Int(ans))
+            newCalculation = self.calculateLabel.text!
+            calculationsBank.append(newCalculation)
         case 19: //decimal point
             opString = "."
         default:
@@ -135,6 +143,12 @@ class ViewController: UIViewController {
         }
         return true
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let historyView = segue.destination as! SecondViewController
+        historyView.calculationsBank = calculationsBank
+    }
+    
 }
 
 
